@@ -33,15 +33,6 @@ func main() {
 			return err
 		}
 
-		subnet2, err := ec2.NewSubnet(ctx, "mySubnetTwo", &ec2.SubnetArgs{
-			AvailabilityZone: pulumi.String("us-east-1b"),
-			VpcId:     vpc.ID(),
-			CidrBlock: pulumi.String("14.0.2.0/24"),
-		})
-		if err != nil {
-			return err
-		}
-
 // **************************************************
 // CREATE THE SECURITY GROUPS
 // **************************************************
@@ -143,7 +134,7 @@ func main() {
 		}
 
 		_, err = ec2native.NewInstanceConnectEndpoint(ctx, "instanceConnectEndpoint", &ec2native.InstanceConnectEndpointArgs{
-			SubnetId:          subnet2.ID(), // Reference to the private subnet
+			SubnetId:          subnet1.ID(), // Reference to the private subnet
 			SecurityGroupIds:  pulumi.StringArray{eicSg.ID()}, // Reference to the security group
 			PreserveClientIp:  pulumi.Bool(false),
 		})
